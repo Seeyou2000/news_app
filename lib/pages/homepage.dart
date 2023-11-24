@@ -4,6 +4,7 @@ import 'package:news_app/data/categorydata.dart';
 import 'package:news_app/data/newsdata.dart';
 import 'package:news_app/model/categorymodel.dart';
 import 'package:news_app/model/newsmodel.dart';
+import 'package:news_app/template/newstemplate.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -135,56 +136,33 @@ class CategoryBoundary extends StatelessWidget {
   CategoryBoundary({this.categoryName = '', this.imageUrl = ''});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 10.0),
-      child: Stack(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-              child: CachedNetworkImage(imageUrl: imageUrl, width: 150, height: 80, fit: BoxFit.cover,)),
-          Container(
-            alignment: Alignment.center,
-            width: 150, height: 90,
-            decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: () {
+        //TODO : categorypage 구현
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 10.0),
+        child: Stack(
+          children: <Widget>[
+            ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              color: Colors.black12,
+                child: CachedNetworkImage(imageUrl: imageUrl, width: 150, height: 80, fit: BoxFit.cover,)),
+            Container(
+              alignment: Alignment.center,
+              width: 150, height: 90,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.black12,
+              ),
+              child: Text(categoryName,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),),
             ),
-            child: Text(categoryName,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w400,
-              fontSize: 20,
-            ),),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class NewsTemplate extends StatelessWidget {
-  String title, description, url, urlToImage;
-  NewsTemplate({super.key, 
-    this.title = "", 
-    this.description = "", 
-    this.url = "", 
-    this.urlToImage = ""});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: CachedNetworkImage(imageUrl: urlToImage, width: 300, height: 200, fit: BoxFit.cover,),
-          ),
-          const SizedBox(height: 8),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.black),),
-          const SizedBox(height: 8),
-          Text(description, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0, color: Colors.black),),
-        ],
+          ],
+        ),
       ),
     );
   }
