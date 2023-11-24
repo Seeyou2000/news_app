@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/data/categorydata.dart';
+import 'package:news_app/data/newsdata.dart';
 import 'package:news_app/model/categorymodel.dart';
+import 'package:news_app/model/newsmodel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,10 +16,19 @@ class _HomePageState extends State<HomePage> {
 
   List<CategoryModel> categories = [];
 
+  List<NewsModel> news = [];
+
+  getNews() async {
+    NewsData newsData = NewsData();
+    await newsData.getNews();
+    news = newsData.newsDataSavedIn;
+  }
+
   @override
   void initState() {
     super.initState();
     categories = getCategories();
+    getNews();
   }
 
   @override
@@ -31,6 +42,7 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(
             color: Colors.blue,
             decoration: TextDecoration.underline,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -47,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FlutterLogo(size: 70.0),
-                  SizedBox(height: 8.0),
+                  SizedBox(height: 10.0),
                   Text('Seeyou News',
                   style: TextStyle(
                     fontSize: 24.0,
@@ -76,26 +88,42 @@ class _HomePageState extends State<HomePage> {
       ),
 
       //category widgets
-      body: Container(
-        color: Colors.white70,
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 70.0,
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: ListView.builder(
-                itemCount: categories.length,
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index){
-                  return CategoryBoundary(
-                    imageUrl: categories[index].imageUrl,
-                    categoryName: categories[index].categoryName,
-                  );
-                },
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.white70,
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 70.0,
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: ListView.builder(
+                  itemCount: categories.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index){
+                    return CategoryBoundary(
+                      imageUrl: categories[index].imageUrl,
+                      categoryName: categories[index].categoryName,
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+              Container(
+                child: ListView.builder(
+                  itemCount: news.length,
+                  physics: const ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index){
+                    return NewsTemplate(
+                      title: news[index].title,
+                      description: news[index].description,
+                      urlToImage: news[index].urlToImage,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
