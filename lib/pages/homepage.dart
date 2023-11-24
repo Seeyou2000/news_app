@@ -24,16 +24,54 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-              Text("Seeyou", style: TextStyle(color: Colors.black
-              ),),
-              Text(" News", style: TextStyle(color: Colors.blue
-              ),),
-          ],
+        title: const Text("Seeyou News",
+          style: TextStyle(
+            color: Colors.blue,
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      ),
+
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FlutterLogo(size: 70.0),
+                  SizedBox(height: 8.0),
+                  Text('Seeyou News',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: Colors.white,
+                  ),),
+                ],
+              ),
+            ),
+            ListTile(
+              title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (CategoryModel category in categories)
+                    Text("- ${category.categoryName}",
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                    ),),
+                ],
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            )
+          ]
         ),
       ),
 
@@ -84,7 +122,7 @@ class CategoryBoundary extends StatelessWidget {
               color: Colors.black12,
             ),
             child: Text(categoryName,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w400,
               fontSize: 20,
