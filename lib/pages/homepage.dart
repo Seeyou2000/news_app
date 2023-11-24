@@ -133,3 +133,32 @@ class CategoryBoundary extends StatelessWidget {
     );
   }
 }
+
+class NewsTemplate extends StatelessWidget {
+  String title, description, url, urlToImage;
+  NewsTemplate({super.key, 
+    this.title = "", 
+    this.description = "", 
+    this.url = "", 
+    this.urlToImage = ""});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: CachedNetworkImage(imageUrl: urlToImage, width: 300, height: 200, fit: BoxFit.cover,),
+          ),
+          SizedBox(height: 8),
+          Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.black),),
+          SizedBox(height: 8),
+          Text(description, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0, color: Colors.black),),
+        ],
+      ),
+    );
+  }
+}
+
