@@ -49,6 +49,62 @@ class _CategoryPagesState extends State<CategoryPages> {
         ),
       ),
 
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FlutterLogo(size: 70.0),
+                  SizedBox(height: 10.0),
+                  Text(
+                    'Seeyou News',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ...List.generate(categories.length, (index) {
+              return ListTile(
+                title: Text(
+                  "- ${categories[index].categoryName}",
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+                onTap: () {
+                  int selectedCategoryIndex = categories.indexWhere(
+                        (category) =>
+                    category.categoryName.toLowerCase() ==
+                        categories[index].categoryName.toLowerCase(),
+                  );
+
+                  if (selectedCategoryIndex != -1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPages(
+                          category: categories[selectedCategoryIndex]
+                              .categoryName
+                              .toLowerCase(),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              );
+            }),
+          ],
+        ),
+      ),
 
       body: SingleChildScrollView(
         child: Container(
