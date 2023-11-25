@@ -21,10 +21,15 @@ class _CategoryPagesState extends State<CategoryPages> {
 
   List<NewsModel> categoryNews = [];
 
+  bool isLoad = true;
+
   getNews() async {
     CategoryNewsData categoryNewsData = CategoryNewsData();
     await categoryNewsData.getNews(widget.category);
     categoryNews = categoryNewsData.categoryDataSavedIn;
+    setState(() {
+      isLoad = false;
+    });
   }
 
   @override
@@ -106,44 +111,47 @@ class _CategoryPagesState extends State<CategoryPages> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white70,
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 70.0,
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: ListView.builder(
-                  itemCount: categories.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index){
-                    return CategoryBoundary(
-                      imageUrl: categories[index].imageUrl,
-                      categoryName: categories[index].categoryName,
-                    );
-                  },
+      body: isLoad ? const Center(
+        child: CircularProgressIndicator(),
+      ): SingleChildScrollView(
+          child: Container(
+            color: Colors.white70,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 70.0,
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: ListView.builder(
+                    itemCount: categories.length,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index){
+                      return CategoryBoundary(
+                        imageUrl: categories[index].imageUrl,
+                        categoryName: categories[index].categoryName,
+                      );
+                    },
+                  ),
                 ),
-              ),
-              Container(
-                child: ListView.builder(
-                  itemCount: categoryNews.length,
-                  physics: const ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index){
-                    return NewsTemplate(
-                      title: categoryNews[index].title,
-                      description: categoryNews[index].description,
-                      urlToImage: categoryNews[index].urlToImage,
-                    );
-                  },
+                Container(
+                  child: ListView.builder(
+                    itemCount: categoryNews.length,
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index){
+                      return NewsTemplate(
+                        title: categoryNews[index].title,
+                        description: categoryNews[index].description,
+                        urlToImage: categoryNews[index].urlToImage,
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+
   }
 }

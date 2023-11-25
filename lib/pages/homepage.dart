@@ -20,10 +20,15 @@ class _HomePageState extends State<HomePage> {
 
   List<NewsModel> news = [];
 
+  bool isLoad = true;
+
   getNews() async {
     NewsData newsData = NewsData();
     await newsData.getNews();
     news = newsData.newsDataSavedIn;
+    setState(() {
+      isLoad = false;
+    });
   }
 
   @override
@@ -106,44 +111,47 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white70,
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 70.0,
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: ListView.builder(
-                  itemCount: categories.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index){
-                    return CategoryBoundary(
-                      imageUrl: categories[index].imageUrl,
-                      categoryName: categories[index].categoryName,
-                    );
-                  },
+      body: isLoad ? const Center(
+        child: CircularProgressIndicator(),
+      ): SingleChildScrollView(
+          child: Container(
+            color: Colors.white70,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 70.0,
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: ListView.builder(
+                    itemCount: categories.length,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index){
+                      return CategoryBoundary(
+                        imageUrl: categories[index].imageUrl,
+                        categoryName: categories[index].categoryName,
+                      );
+                    },
+                  ),
                 ),
-              ),
-              Container(
-                child: ListView.builder(
-                  itemCount: news.length,
-                  physics: const ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index){
-                    return NewsTemplate(
-                      title: news[index].title,
-                      description: news[index].description,
-                      urlToImage: news[index].urlToImage,
-                    );
-                  },
+                Container(
+                  child: ListView.builder(
+                    itemCount: news.length,
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index){
+                      return NewsTemplate(
+                        title: news[index].title,
+                        description: news[index].description,
+                        urlToImage: news[index].urlToImage,
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+
   }
 }
