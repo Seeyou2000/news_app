@@ -143,6 +143,7 @@ class _CategoryPagesState extends State<CategoryPages> {
                         title: categoryNews[index].title,
                         description: categoryNews[index].description,
                         urlToImage: categoryNews[index].urlToImage,
+                        url: categoryNews[index].url,
                       );
                     },
                   ),

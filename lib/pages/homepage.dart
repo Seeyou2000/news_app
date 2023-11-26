@@ -6,7 +6,6 @@ import 'package:news_app/model/newsmodel.dart';
 import 'package:news_app/pages/categorypage.dart';
 import 'package:news_app/template/newstemplate.dart';
 import 'package:news_app/boundary/categoryboundary.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -143,6 +142,7 @@ class _HomePageState extends State<HomePage> {
                         title: news[index].title,
                         description: news[index].description,
                         urlToImage: news[index].urlToImage,
+                        url: news[index].url,
                       );
                     },
                   ),
