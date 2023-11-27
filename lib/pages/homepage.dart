@@ -52,6 +52,11 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: <Widget>[
+          IconButton(onPressed: (){
+            //TODO : 검색기능 구현.
+          }, icon: const Icon(Icons.search))
+        ],
       ),
 
       drawer: Drawer(
