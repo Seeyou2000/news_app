@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/data/categorydata.dart';
 import 'package:news_app/data/newsdata.dart';
@@ -23,6 +22,12 @@ class _CategoryPagesState extends State<CategoryPages> {
 
   bool isLoad = true;
 
+  bool isSearch = false;
+
+  String searchText = "";
+
+  TextEditingController searchController = TextEditingController();
+
   getNews() async {
     CategoryNewsData categoryNewsData = CategoryNewsData();
     await categoryNewsData.getNews(widget.category);
@@ -39,26 +44,16 @@ class _CategoryPagesState extends State<CategoryPages> {
     getNews();
   }
 
+  void onSearchPressed() {
+    setState(() {
+      isSearch = !isSearch;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        title: Text(widget.category.toUpperCase(),
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(onPressed: (){
-            //TODO : 검색기능 구현.
-          }, icon: const Icon(Icons.search))
-        ],
-      ),
-
+      appBar: categoryAppBar(),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -157,5 +152,46 @@ class _CategoryPagesState extends State<CategoryPages> {
         ),
       );
 
+  }
+
+  PreferredSizeWidget categoryAppBar() {
+    if (isSearch) {
+      return AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        title: TextField(
+          controller: searchController,
+          decoration: const InputDecoration(
+            hintText: 'Search...',
+            border: InputBorder.none,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              onSearchPressed();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+        ],
+      );
+    } else {
+      return AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        title: Text(widget.category.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(onPressed: (){
+            onSearchPressed();
+          }, icon: const Icon(Icons.search))
+        ],
+      );
+    }
   }
 }

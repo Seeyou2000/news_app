@@ -6,6 +6,7 @@ import 'package:news_app/model/newsmodel.dart';
 import 'package:news_app/pages/categorypage.dart';
 import 'package:news_app/template/newstemplate.dart';
 import 'package:news_app/boundary/categoryboundary.dart';
+import 'package:news_app/widgets/homeappbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,6 +22,12 @@ class _HomePageState extends State<HomePage> {
   List<NewsModel> news = [];
 
   bool isLoad = true;
+
+  bool isSearch = false;
+
+  String searchText = "";
+
+  TextEditingController searchController = TextEditingController();
 
   getNews() async {
     NewsData newsData = NewsData();
@@ -38,27 +45,16 @@ class _HomePageState extends State<HomePage> {
     getNews();
   }
 
+  void onSearchPressed() {
+    setState(() {
+      isSearch = !isSearch;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        title: const Text("Seeyou News",
-          style: TextStyle(
-            color: Colors.blue,
-            decoration: TextDecoration.underline,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(onPressed: (){
-            //TODO : 검색기능 구현.
-          }, icon: const Icon(Icons.search))
-        ],
-      ),
-
+      appBar: HomeAppBar.homeAppBar(isSearch, searchController, onSearchPressed),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
