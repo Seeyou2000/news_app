@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 class NewsTemplate extends StatelessWidget {
   final String title, description, url, urlToImage;
 
-  NewsTemplate({
+  const NewsTemplate({
     Key? key,
     this.title = "",
     this.description = "",

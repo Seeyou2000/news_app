@@ -4,7 +4,7 @@ import 'package:news_app/pages/categorypage.dart';
 
 class CategoryBoundary extends StatelessWidget {
   final String categoryName, imageUrl;
-  CategoryBoundary({this.categoryName = '', this.imageUrl = ''});
+  const CategoryBoundary({super.key, this.categoryName = '', this.imageUrl = ''});
 
   @override
   Widget build(BuildContext context) {

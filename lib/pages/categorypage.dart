@@ -10,7 +10,7 @@ import 'package:news_app/boundary/categoryboundary.dart';
 class CategoryPages extends StatefulWidget {
 
   String category;
-  CategoryPages({this.category = ""});
+  CategoryPages({super.key, this.category = ""});
 
   @override
   State<CategoryPages> createState() => _CategoryPagesState();
@@ -133,20 +133,18 @@ class _CategoryPagesState extends State<CategoryPages> {
                     },
                   ),
                 ),
-                Container(
-                  child: ListView.builder(
-                    itemCount: categoryNews.length,
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index){
-                      return NewsTemplate(
-                        title: categoryNews[index].title,
-                        description: categoryNews[index].description,
-                        urlToImage: categoryNews[index].urlToImage,
-                        url: categoryNews[index].url,
-                      );
-                    },
-                  ),
+                ListView.builder(
+                  itemCount: categoryNews.length,
+                  physics: const ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index){
+                    return NewsTemplate(
+                      title: categoryNews[index].title,
+                      description: categoryNews[index].description,
+                      urlToImage: categoryNews[index].urlToImage,
+                      url: categoryNews[index].url,
+                    );
+                  },
                 ),
               ],
             ),
