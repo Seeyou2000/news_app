@@ -4,9 +4,9 @@ import 'package:news_app/data/newsdata.dart';
 import 'package:news_app/model/categorymodel.dart';
 import 'package:news_app/model/newsmodel.dart';
 import 'package:news_app/pages/categorypage.dart';
+import 'package:news_app/pages/searchpage.dart';
 import 'package:news_app/template/newstemplate.dart';
 import 'package:news_app/boundary/categoryboundary.dart';
-import 'package:news_app/widgets/homeappbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,13 +48,16 @@ class _HomePageState extends State<HomePage> {
   void onSearchPressed() {
     setState(() {
       isSearch = !isSearch;
+      if (!isSearch) {
+        searchText = "";
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar.homeAppBar(isSearch, searchController, onSearchPressed),
+      appBar: homeAppBar(),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -152,6 +155,66 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
+  }
 
+  PreferredSizeWidget homeAppBar() {
+    if (isSearch) {
+      return AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        title: TextField(
+          controller: searchController,
+          onChanged: (query){
+            setState(() {
+              searchText = query;
+            });
+          },
+          decoration: const InputDecoration(
+            hintText: 'Search...',
+            border: InputBorder.none,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              isSearch = !isSearch;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(query: searchText),
+                ),
+              );
+            },
+            icon: const Icon(Icons.search),
+          ),
+          IconButton(
+            onPressed: () {
+              onSearchPressed();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+        ],
+      );
+    } else {
+      return AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        title: const Text(
+          "Seeyou News",
+          style: TextStyle(
+            color: Colors.blue,
+            decoration: TextDecoration.underline,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+              onPressed: (){
+                onSearchPressed();
+              }, icon: const Icon(Icons.search)),
+        ],
+      );
+    }
   }
 }
