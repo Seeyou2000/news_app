@@ -53,3 +53,34 @@ class CategoryNewsData{
     }
   }
 }
+
+class SearchNewsData{
+  List<NewsModel> searchDataSavedIn = [];
+  var totalResults = 0;
+
+  Future<void> getNews(String q) async {
+    String query = q.toLowerCase();
+    String apiUri = "https://newsapi.org/v2/top-headlines?q=$query&apiKey=${dotenv.env['API_KEY']}";
+    var response = await get(Uri.parse(apiUri));
+    var jsonData = jsonDecode(response.body);
+
+    if(jsonData['status'] == 'ok'){
+      totalResults = jsonData['totalResults'];
+      jsonData['articles'].forEach((e){
+        if(e['urlToImage'] != null && e['description'] != null && e['description'] != '[Removed]'){
+          NewsModel newsModel = NewsModel(
+            title: e['title'],
+            urlToImage: e['urlToImage'],
+            description: e['description'],
+            url: e['url'],
+          );
+
+          searchDataSavedIn.add(newsModel);
+        }
+        else{
+          totalResults--;
+        }
+      });
+    }
+  }
+}
