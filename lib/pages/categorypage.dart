@@ -3,6 +3,8 @@ import 'package:news_app/data/categorydata.dart';
 import 'package:news_app/data/newsdata.dart';
 import 'package:news_app/model/categorymodel.dart';
 import 'package:news_app/model/newsmodel.dart';
+import 'package:news_app/pages/searchpage.dart';
+import 'package:news_app/settings/setting.dart';
 import 'package:news_app/template/newstemplate.dart';
 import 'package:news_app/boundary/categoryboundary.dart';
 
@@ -22,10 +24,6 @@ class _CategoryPagesState extends State<CategoryPages> {
 
   bool isLoad = true;
 
-  bool isSearch = false;
-
-  String searchText = "";
-
   TextEditingController searchController = TextEditingController();
 
   getNews() async {
@@ -37,17 +35,20 @@ class _CategoryPagesState extends State<CategoryPages> {
     });
   }
 
+  void onSearchPressed() {
+    setState(() {
+      Setting.isSearch = !Setting.isSearch;
+      if (!Setting.isSearch) {
+        Setting.searchText = "";
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     categories = getCategories();
     getNews();
-  }
-
-  void onSearchPressed() {
-    setState(() {
-      isSearch = !isSearch;
-    });
   }
 
   @override
@@ -155,7 +156,7 @@ class _CategoryPagesState extends State<CategoryPages> {
   }
 
   PreferredSizeWidget categoryAppBar() {
-    if (isSearch) {
+    if (Setting.isSearch) {
       return AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -169,10 +170,20 @@ class _CategoryPagesState extends State<CategoryPages> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              onSearchPressed();
+              Setting.isSearch = !Setting.isSearch;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(query: Setting.searchText),
+                )
+              );
+              Setting.searchText = "";
             },
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.search),
           ),
+          IconButton(onPressed: (){
+            onSearchPressed();
+          }, icon: const Icon(Icons.arrow_back))
         ],
       );
     } else {

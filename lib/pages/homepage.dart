@@ -5,6 +5,7 @@ import 'package:news_app/model/categorymodel.dart';
 import 'package:news_app/model/newsmodel.dart';
 import 'package:news_app/pages/categorypage.dart';
 import 'package:news_app/pages/searchpage.dart';
+import 'package:news_app/settings/setting.dart';
 import 'package:news_app/template/newstemplate.dart';
 import 'package:news_app/boundary/categoryboundary.dart';
 
@@ -22,10 +23,6 @@ class _HomePageState extends State<HomePage> {
   List<NewsModel> news = [];
 
   bool isLoad = true;
-
-  bool isSearch = false;
-
-  String searchText = "";
 
   TextEditingController searchController = TextEditingController();
 
@@ -47,9 +44,9 @@ class _HomePageState extends State<HomePage> {
 
   void onSearchPressed() {
     setState(() {
-      isSearch = !isSearch;
-      if (!isSearch) {
-        searchText = "";
+      Setting.isSearch = !Setting.isSearch;
+      if (!Setting.isSearch) {
+        Setting.searchText = "";
       }
     });
   }
@@ -158,7 +155,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   PreferredSizeWidget homeAppBar() {
-    if (isSearch) {
+    if (Setting.isSearch) {
       return AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -166,7 +163,7 @@ class _HomePageState extends State<HomePage> {
           controller: searchController,
           onChanged: (query){
             setState(() {
-              searchText = query;
+              Setting.searchText = query;
             });
           },
           decoration: const InputDecoration(
@@ -177,13 +174,14 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              isSearch = !isSearch;
+              Setting.isSearch = !Setting.isSearch;
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SearchPage(query: searchText),
+                  builder: (context) => SearchPage(query: Setting.searchText),
                 ),
               );
+              Setting.searchText = "";
             },
             icon: const Icon(Icons.search),
           ),
