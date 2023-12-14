@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
       Setting.isSearch = !Setting.isSearch;
       if (!Setting.isSearch) {
         Setting.searchText = "";
+        searchController.clear();
       }
     });
   }
@@ -182,6 +183,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
               Setting.searchText = "";
+              searchController.clear();
             },
             icon: const Icon(Icons.search),
           ),

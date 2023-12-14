@@ -40,6 +40,7 @@ class _CategoryPagesState extends State<CategoryPages> {
       Setting.isSearch = !Setting.isSearch;
       if (!Setting.isSearch) {
         Setting.searchText = "";
+        searchController.clear();
       }
     });
   }
@@ -178,6 +179,7 @@ class _CategoryPagesState extends State<CategoryPages> {
                 )
               );
               Setting.searchText = "";
+              searchController.clear();
             },
             icon: const Icon(Icons.search),
           ),
