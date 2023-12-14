@@ -182,7 +182,6 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => SearchPage(query: Setting.searchText),
                 ),
               );
-              Setting.searchText = "";
               searchController.clear();
             },
             icon: const Icon(Icons.search),

@@ -163,6 +163,11 @@ class _CategoryPagesState extends State<CategoryPages> {
         elevation: 0.0,
         title: TextField(
           controller: searchController,
+          onChanged: (query){
+            setState(() {
+              Setting.searchText = query;
+            });
+          },
           decoration: const InputDecoration(
             hintText: 'Search...',
             border: InputBorder.none,
@@ -178,7 +183,6 @@ class _CategoryPagesState extends State<CategoryPages> {
                   builder: (context) => SearchPage(query: Setting.searchText),
                 )
               );
-              Setting.searchText = "";
               searchController.clear();
             },
             icon: const Icon(Icons.search),
